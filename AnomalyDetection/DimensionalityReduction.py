@@ -1,7 +1,8 @@
-import matplotlib.pyplot as plt
 from sklearn.decomposition import NMF
 import numpy as np
 import warnings
+from sklearn.decomposition import PCA
+
 warnings.filterwarnings('ignore')
 
 
@@ -37,3 +38,12 @@ def sklearn_nmf(image, max_iter=1000, k=None):
 
         print(f'k = {best["k"]}')
         return best['W'].reshape((h, w, best['k']))
+
+
+def pca(image, d):
+    org_shape = image.shape
+    pca_image = image.copy().reshape(org_shape[0] * org_shape[1], org_shape[2])
+    pca_model = PCA(n_components=d)
+    pca_image = pca_model.fit_transform(pca_image)
+    pca_image = pca_image.reshape(org_shape[0], org_shape[1], d)
+    return pca_image
